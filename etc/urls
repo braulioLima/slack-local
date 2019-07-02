@@ -1,0 +1,13 @@
+######################### HEADER #################################
+#								 #
+#  DESCRIPTION:							 #
+#    URL configuration for download				 #
+#  								 #
+##################################################################
+
+ URL="rsync.osuosl.org::slackware"
+# URL="slackware.mirrors.tds.net::slackware"
+# URL="rsync.slackware.pl::slackware"
+# URL="rsync.slackware.at::slackware"
+# URL="mirrors.vbi.vt.edu::slackware"
+# URL="rsync.slackware.no::slackware"

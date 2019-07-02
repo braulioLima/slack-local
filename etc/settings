@@ -1,0 +1,7 @@
+. "${CONFIG_DIR}/urls"
+
+VERSION="current"
+AMD64=1 # 0: 32bits, 1: 64bits, 2:ARM, 2 != error
+TARGET="/home/braulio/slackware"
+EXCLUDE="$CONFIG_DIR/exclude.list"
+URL=${URL:-"rsync.osuosl.org::slackware"}

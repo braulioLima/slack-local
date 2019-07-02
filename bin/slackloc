@@ -1,0 +1,71 @@
+#!/bin/sh
+
+#################### HEADER ###################################
+#							      #
+#  DESCRIPTION:						      #
+#    This script make a custom Local slackware Repository     #
+#  AUTHOR:						      #
+#    Bráulio F. Lima  <>				      #
+#							      #
+###############################################################
+
+################### Imports ###################################
+
+# ADD settings file
+. "/home/$USER/scripts/slackloc/etc/path_settings"
+. "${CONFIG_DIR}/settings"
+
+# ADD the urls file
+#.  "${CONFIG_DIR}/urls"
+
+################### Tests #####################################
+
+# Verify the connection
+wget -q --spider www.google.com
+[ $? = 0 ] || { echo "Please connect the internet..."; exit 1 ; }
+
+# Verify if have rsync
+command -v rsync > /dev/null
+[ $? = 0 ] || { echo "Please install Rsync..."; exit 1; }
+
+################## VARS ######################################
+
+
+# Default values if not set
+#URL=${URL:-"rsync.osuosl.org::slackware"}
+VERSION=${VERSION:-"current"}
+SLACK_B=${SLACK_B:-"slackware"}
+BASE_DIR=${BASE_DIR:-"/home/$USER/scripts/slackloc"}
+TARGET=${TARGET:-"${BASE_DIR}/data/slackware"}
+EXCLUDE=${EXCLUDE:-""}
+SOURCE=${SOURCE:-"${URL}/${SLACK_B}-$VERSION"}
+
+################ PROGRAM ####################################
+
+# Define slackware arch
+case ${AMD64} in
+    0) ;;
+    1) SLACK_B="slackware64";;
+    *) echo "Only 0 to 32 bits or 1 to 64 bits"
+        exit 1
+        ;;
+esac
+
+# Set the url using the settings file
+SOURCE="${URL}/${SLACK_B}-${VERSION}"
+
+[ ! -d ${TARGET} ] && mkdir -pv $TARGET
+LOG_FILE=${BASE_DIR}/log
+[ ! -f ${LOG_FILE} ] && > ${LOG_FILE}
+
+$CMD  --human-readable \
+      --progress \
+      --verbose \
+      --archive \
+      --update \
+      --recursive \
+      --delete-after \
+      --delete-excluded \
+      --log-file=${LOG_FILE} \
+      --exclude-from=${EXCLUDE}  \
+        ${SOURCE} ${TARGET}
